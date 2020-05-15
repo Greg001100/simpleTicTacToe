@@ -1,5 +1,7 @@
 window.onload = () => {
-  const squares = document.querySelectorAll;
+
+
+  const key = "ticTacGameState";
   let board = document.getElementById("tic-tac-toe-board");
   let h1 = document.getElementById("game-status")
   let winn = document.createTextNode("A CHAMPION HAS BEEN CROWNED!!! A LOSER AS WELL, BE YE HUMBLED IN THE PRESENCE OF GREATNESS, LOSER.");
@@ -11,7 +13,36 @@ window.onload = () => {
   let currentPlayer = 'x'
   let squareArray = ['','','','','','','','','']
 
+  function saveGame() {
+    const state = {
+      currentPlayer,
+      squareArray,
+      count,
+    }
+    localStorage.setItem(key, JSON.stringify(state))
+    console.log(localStorage)
+  }
 
+  function loadGame() {
+    const saved = window.localStorage.getItem(key)
+    console.log(saved)
+    if (saved ===null) return;
+
+    const state = JSON.parse(saved);
+    console.log(state)
+    count= state.count;
+    currentPlayer= state.currentPlayer;
+    squareArray = state.squareArray;
+
+    for (let i = 0; i < 9; i++) {
+      let squareID = document.getElementById(`square-${i}`)
+      if(squareArray[i] === 'x') {
+        squareID.innerHTML = `<img src="player-x.svg">`;
+      } else if( squareArray[i] === 'o') {
+        squareID.innerHTML = `<img src="player-o.svg">`
+      }
+    }
+  }
 
   const winCheck = () => {
     squareArray.forEach((el, i) => {//horizontals and diagonals
@@ -60,23 +91,33 @@ window.onload = () => {
         }
 
         board.addEventListener("click", (e) => {
+          if (event.target===board) {
+            return;
+          }
           if(h1.innerText.length !== 0) {
+            return;
           }
           const targetId = e.target.id;
           const squareIndex = Number.parseInt(targetId[targetId.length-1]);
 
-          // newGame.addEventListener('click', e => {
-          //   count = 0;
-          //   currentPlayer = 'x';
-          //   squareArray = ['','','','','','','','','']
-          // })
-          // quit.addEventListener('click', e => {
-          //   if(currentPlayer === 'x') {
-          //     h1.innerText = `A CHAMPION 'O' HAS BEEN CROWNED!!! BE YE HUMBLED IN THE PRESENCE OF GREATNESS, LOSER.`;
-          //   } else {
-          //     h1.innerText = `A CHAMPION 'X' HAS BEEN CROWNED!!! BE YE HUMBLED IN THE PRESENCE OF GREATNESS, LOSER.`;
-          //   }
-          // })
+          newGame.addEventListener('click', e => {
+            // count = 0;
+            // currentPlayer = 'x';
+            // squareArray = ['','','','','','','','','']
+            localStorage.clear();
+            location.reload();
+          })
+
+          quit.addEventListener('click', e => {
+            if(currentPlayer === 'x') {
+              h1.innerText = `A CHAMPION 'O' HAS BEEN CROWNED!!! BE YE HUMBLED IN THE PRESENCE OF GREATNESS, LOSER.`;
+              document.getElementById('newGame').disabled = false;
+            } else {
+              h1.innerText = `A CHAMPION 'X' HAS BEEN CROWNED!!! BE YE HUMBLED IN THE PRESENCE OF GREATNESS, LOSER.`;
+              document.getElementById('newGame').disabled = false;
+            }
+          })
+
           if (e.target.innerHTML.length === 0) {
           } else {
             count++;
@@ -99,9 +140,10 @@ window.onload = () => {
             currentPlayer = 'o';
 
           }
+          saveGame()
 
           console.log(squareArray)
           console.log(count);
         });
-
+        loadGame()
       };
