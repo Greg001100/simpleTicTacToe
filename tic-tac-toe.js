@@ -19,12 +19,12 @@ window.onload = () => {
       squareArray,
       count,
     };
-    localStorage.setItem(key, JSON.stringify(state));
-    console.log(localStorage);
+    sessionStorage.setItem(key, JSON.stringify(state));
+    console.log(sessionStorage);
   }
 
   function loadGame() {
-    const saved = window.localStorage.getItem(key);
+    const saved = window.sessionStorage.getItem(key);
     console.log(saved);
     if (saved === null) return;
 
@@ -191,7 +191,7 @@ window.onload = () => {
   });
 
   newGame.addEventListener("click", (e) => {
-    localStorage.clear();
+    sessionStorage.clear();
     location.reload();
   });
 
