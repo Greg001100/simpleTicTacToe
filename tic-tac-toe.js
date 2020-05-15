@@ -123,40 +123,30 @@ window.onload = () => {
     console.log(randomNum);
     let aiPick = document.getElementById(`square-${randomNum}`);
     console.log(aiPick);
-    if (currentPlayer === 'x') {
-    if (squareArray[4] !== "") {
-      if (
-        randomNum === 2 ||
-        randomNum === 0 ||
-        randomNum === 6 ||
-        randomNum === 8
-      ) {
+    if (currentPlayer === "x") {
+      if (squareArray[randomNum] === "") {
         squareArray[randomNum] = "x";
         count++;
-        aiPick.innerHTML= `<img src="player-x.svg">`
-        currentPlayer = 'o';
+        aiPick.innerHTML = `<img src="player-x.svg">`;
+        winCheck();
+        currentPlayer = "o";
         saveGame();
-
+      } else {
+        android();
       }
-    }
-  } else {
-    if (squareArray[4] !== "") {
-      if (
-        randomNum === 2 ||
-        randomNum === 0 ||
-        randomNum === 6 ||
-        randomNum === 8
-      ) {
+    } else {
+      if (squareArray[randomNum] === "") {
         squareArray[randomNum] = "o";
         count++;
-        aiPick.innerHTML= `<img src="player-o.svg">`
-        currentPlayer = 'x'
+        aiPick.innerHTML = `<img src="player-o.svg">`;
+        winCheck();
+        currentPlayer = "x";
         saveGame();
+      } else {
+        android();
       }
     }
-
-  }
-}
+  };
   ai.addEventListener("click", (e) => {
     if (currentPlayer === "x") {
       let midSquare = document.getElementById(`square-4`);
@@ -165,7 +155,7 @@ window.onload = () => {
         midSquare.innerHTML = `<img src="player-x.svg">`;
         count++;
         squareArray[4] = "x";
-        currentPlayer = 'o'
+        currentPlayer = "o";
         saveGame();
       } else {
         android();
@@ -177,14 +167,14 @@ window.onload = () => {
         midSquare.innerHTML = `<img src="player-o.svg">`;
         count++;
         squareArray[4] = "o";
-        currentPlayer = 'x'
+        currentPlayer = "x";
         saveGame();
       } else {
         android();
       }
     }
   });
-console.log('this is annoying');
+  console.log("this is annoying");
   // let   says = document.createElement('h2');
   //   let that = document.createTextNode('Pitiful human, you have no chance');
   //   says.appendChild(that);
